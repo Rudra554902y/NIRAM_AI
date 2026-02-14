@@ -68,7 +68,7 @@ node seed.js
 ```
 
 This creates a Super Doctor account:
-- Email: `superdoctor@niram.com`
+- Email: `example.com`
 - Password: `super123`
 
 5. **Start the server**

@@ -138,15 +138,17 @@ const LoginPage = () => {
 
               <div className="relative z-10">
                 {/* Icon */}
-                <div
+                <motion.div
                   className={`w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center transition-all ${
                     selectedRole === role.id
                       ? `bg-gradient-to-br ${role.gradient} text-white shadow-lg`
                       : 'bg-slate-800 text-slate-400 group-hover:bg-slate-700'
                   }`}
+                  animate={selectedRole === role.id ? { scale: [1, 1.05, 1] } : {}}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 >
                   {role.icon}
-                </div>
+                </motion.div>
 
                 {/* Title */}
                 <h3
@@ -192,7 +194,7 @@ const LoginPage = () => {
                 placeholder={`Enter ${selectedRole === 'PATIENT' ? 'Patient' : selectedRole === 'DOCTOR' ? 'Doctor' : 'Receptionist'} ID`}
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
-                className="w-full bg-slate-900 border border-white/10 focus:border-emerald-500 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none transition-all"
+                className="w-full bg-slate-900 border border-white/10 focus:border-emerald-500 focus:shadow-lg focus:shadow-emerald-500/20 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none transition-all"
               />
             </div>
 
@@ -205,7 +207,7 @@ const LoginPage = () => {
                 value={accessKey}
                 onChange={(e) => setAccessKey(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-                className="w-full bg-slate-900 border border-white/10 focus:border-emerald-500 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none transition-all"
+                className="w-full bg-slate-900 border border-white/10 focus:border-emerald-500 focus:shadow-lg focus:shadow-emerald-500/20 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none transition-all"
               />
             </div>
 

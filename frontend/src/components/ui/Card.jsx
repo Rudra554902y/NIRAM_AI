@@ -4,8 +4,9 @@
  */
 
 import React from 'react';
+import { motion } from 'motion/react';
 
-export const Card = ({ children, className = '', variant = 'default', ...props }) => {
+export const Card = ({ children, className = '', variant = 'default', animated = true, ...props }) => {
   const variants = {
     default: 'bg-white/5 border border-white/10',
     primary: 'bg-emerald-500/5 border border-emerald-500/20',
@@ -14,13 +15,22 @@ export const Card = ({ children, className = '', variant = 'default', ...props }
     danger: 'bg-red-500/5 border border-red-500/20'
   };
 
+  const CardWrapper = animated ? motion.div : 'div';
+  const animationProps = animated ? {
+    whileHover: { y: -4, transition: { duration: 0.2 } },
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.3 }
+  } : {};
+
   return (
-    <div
-      className={`p-6 rounded-2xl backdrop-blur-sm ${variants[variant]} ${className}`}
+    <CardWrapper
+      className={`p-6 rounded-2xl backdrop-blur-sm transition-shadow hover:shadow-lg hover:shadow-emerald-500/5 ${variants[variant]} ${className}`}
+      {...animationProps}
       {...props}
     >
       {children}
-    </div>
+    </CardWrapper>
   );
 };
 
@@ -34,18 +44,34 @@ export const StatCard = ({ label, value, icon, trend, color = 'emerald' }) => {
   };
 
   return (
-    <Card>
+    <Card animated={true}>
       <div className="flex items-start justify-between mb-4">
-        <div className={`p-3 rounded-xl ${colorClasses[color]}`}>
+        <motion.div 
+          className={`p-3 rounded-xl ${colorClasses[color]}`}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
           {icon}
-        </div>
+        </motion.div>
         {trend && (
-          <div className={`text-xs font-bold px-2 py-1 rounded-full ${trend > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+          <motion.div 
+            className={`text-xs font-bold px-2 py-1 rounded-full ${trend > 0 ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+          >
             {trend > 0 ? '+' : ''}{trend}%
-          </div>
+          </motion.div>
         )}
       </div>
-      <div className="text-3xl font-bold mb-1">{value}</div>
+      <motion.div 
+        className="text-3xl font-bold mb-1"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.1 }}
+      >
+        {value}
+      </motion.div>
       <div className="text-sm text-slate-500 uppercase tracking-wider">{label}</div>
     </Card>
   );

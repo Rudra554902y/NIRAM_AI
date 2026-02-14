@@ -126,7 +126,7 @@ const HomePage = () => {
           </div>
           <button
             onClick={() => navigate('/login')}
-            className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 font-medium transition-all"
+            className="px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 font-medium transition-all hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/20"
           >
             Sign In
           </button>
@@ -218,12 +218,16 @@ const HomePage = () => {
                 whileInView={{ y: 0, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className={`p-6 rounded-2xl border backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer ${colorMap[feature.color]}`}
+                whileHover={{ y: -8, transition: { duration: 0.2 } }}
+                className={`p-6 rounded-2xl border backdrop-blur-sm cursor-pointer group ${colorMap[feature.color]}`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${feature.color === 'emerald' ? 'bg-emerald-500 text-slate-900' : ''}`}>
+                <motion.div 
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${feature.color === 'emerald' ? 'bg-emerald-500 text-slate-900' : ''}`}
+                  whileHover={{ rotate: [0, -10, 10, -10, 0], transition: { duration: 0.5 } }}
+                >
                   {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-100">{feature.title}</h3>
+                </motion.div>
+                <h3 className="text-xl font-bold mb-2 text-slate-100 group-hover:text-emerald-400 transition-colors">{feature.title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}

@@ -31,7 +31,9 @@ const LoginPage = () => {
       icon: <User className="w-10 h-10" />,
       description: 'Book appointments & view health records',
       color: 'emerald',
-      gradient: 'from-emerald-500 to-teal-500'
+      gradient: 'from-emerald-500 to-teal-500',
+      userId: 'p1',
+      accessKey: 'patient@2026'
     },
     {
       id: 'RECEPTIONIST',
@@ -39,7 +41,9 @@ const LoginPage = () => {
       icon: <ShieldCheck className="w-10 h-10" />,
       description: 'Manage queue & clinical operations',
       color: 'blue',
-      gradient: 'from-blue-500 to-cyan-500'
+      gradient: 'from-blue-500 to-cyan-500',
+      userId: 'r1',
+      accessKey: 'reception@2026'
     },
     {
       id: 'DOCTOR',
@@ -47,7 +51,9 @@ const LoginPage = () => {
       icon: <Stethoscope className="w-10 h-10" />,
       description: 'View schedule & manage consultations',
       color: 'purple',
-      gradient: 'from-purple-500 to-pink-500'
+      gradient: 'from-purple-500 to-pink-500',
+      userId: 'd1',
+      accessKey: 'doctor@2026'
     }
   ];
 
@@ -173,11 +179,23 @@ const LoginPage = () => {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-4 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm"
           >
+            {/* Display selected role credentials */}
+            <div className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+              <div>
+                <p className="text-xs text-slate-500">User ID</p>
+                <p className="text-sm font-mono text-emerald-400">{roles.find(r => r.id === selectedRole)?.userId}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-slate-500">Access Key</p>
+                <p className="text-sm font-mono text-blue-400">{roles.find(r => r.id === selectedRole)?.accessKey}</p>
+              </div>
+            </div>
+
             <div className="relative group">
               <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-emerald-500 transition-colors" />
               <input
                 type="password"
-                placeholder="Enter Access Key (Mock: Any Key Works)"
+                placeholder="Enter Access Key"
                 value={accessKey}
                 onChange={(e) => setAccessKey(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
@@ -194,18 +212,34 @@ const LoginPage = () => {
             </button>
 
             <p className="text-xs text-slate-500 text-center">
-              🔒 Preview Mode: Any access key will authenticate you
+              🔒 Use the access key shown above or any key to login
             </p>
           </motion.div>
         )}
 
-        {/* Info Card */}
+        {/* Info Card - Credentials */}
         {!selectedRole && (
-          <div className="mt-8 p-6 rounded-2xl bg-blue-500/5 border border-blue-500/20 text-center">
-            <p className="text-sm text-slate-400 leading-relaxed">
-              <span className="text-blue-400 font-bold">Getting Started:</span> Select any role above and enter your access key to access the system.
-              Preview mode allows exploration with mock authentication.
-            </p>
+          <div className="mt-8 p-6 rounded-2xl bg-blue-500/5 border border-blue-500/20">
+            <p className="text-sm text-blue-400 font-bold text-center mb-4">Preview Mode Credentials</p>
+            <div className="grid gap-3">
+              {roles.map((role) => (
+                <div key={role.id} className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${role.gradient} flex items-center justify-center text-white scale-75`}>
+                      {role.icon}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-300">{role.title}</p>
+                      <p className="text-xs text-slate-500">User ID: <span className="text-emerald-400 font-mono">{role.userId}</span></p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-slate-500">Access Key</p>
+                    <p className="text-sm font-mono text-blue-400">{role.accessKey}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </motion.div>

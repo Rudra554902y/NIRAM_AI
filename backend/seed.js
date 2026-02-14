@@ -11,7 +11,7 @@ async function seed() {
     console.log("Mongo Connected");
 
     const existing = await User.findOne({
-      email: "superdoctor@niram.com",
+      email: "example.com",
     });
 
     if (existing) {
@@ -23,7 +23,7 @@ async function seed() {
 
     const doctorUser = await User.create({
       name: "Dr. NIRAM",
-      email: "superdoctor@niram.com",
+      email: "example.com",
       phone: "9000000000",
       password: hashed,
       role: "DOCTOR",

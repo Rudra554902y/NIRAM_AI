@@ -52,6 +52,13 @@ const App = () => {
 
   // Mock login - credentials match schema from requirements
   const login = (role, credentials) => {
+    // Valid credentials for preview mode
+    const validCredentials = {
+      PATIENT: { userId: 'p1', accessKey: 'patient@2026' },
+      DOCTOR: { userId: 'd1', accessKey: 'doctor@2026' },
+      RECEPTIONIST: { userId: 'r1', accessKey: 'reception@2026' }
+    };
+
     const mockUsers = {
       PATIENT: {
         _id: 'p1',
@@ -83,6 +90,17 @@ const App = () => {
         status: 'ACTIVE'
       }
     };
+
+    // Validate credentials (in preview mode, any credentials work for demo)
+    // In production, this would validate against backend
+    if (credentials) {
+      const valid = validCredentials[role];
+      // For preview mode, accept valid credentials or any credentials
+      // You can make this strict by uncommenting below:
+      // if (credentials.userId !== valid.userId || credentials.accessKey !== valid.accessKey) {
+      //   throw new Error('Invalid credentials');
+      // }
+    }
     
     setUser(mockUsers[role]);
     return mockUsers[role];

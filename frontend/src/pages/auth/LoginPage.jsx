@@ -13,7 +13,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { User, ShieldCheck, Stethoscope, ArrowLeft, KeyRound, LogIn } from 'lucide-react';
+import { User, ShieldCheck, Stethoscope, ArrowLeft, KeyRound, LogIn, IdCard } from 'lucide-react';
 import { useAuth } from '../../App.jsx';
 import { toast } from 'sonner';
 import Logo from '../../components/ui/Logo.jsx';
@@ -22,6 +22,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [selectedRole, setSelectedRole] = useState(null);
+  const [userId, setUserId] = useState('');
   const [accessKey, setAccessKey] = useState('');
 
   const roles = [
@@ -31,9 +32,7 @@ const LoginPage = () => {
       icon: <User className="w-10 h-10" />,
       description: 'Book appointments & view health records',
       color: 'emerald',
-      gradient: 'from-emerald-500 to-teal-500',
-      userId: 'p1',
-      accessKey: 'patient@2026'
+      gradient: 'from-emerald-500 to-teal-500'
     },
     {
       id: 'RECEPTIONIST',
@@ -41,9 +40,7 @@ const LoginPage = () => {
       icon: <ShieldCheck className="w-10 h-10" />,
       description: 'Manage queue & clinical operations',
       color: 'blue',
-      gradient: 'from-blue-500 to-cyan-500',
-      userId: 'r1',
-      accessKey: 'reception@2026'
+      gradient: 'from-blue-500 to-cyan-500'
     },
     {
       id: 'DOCTOR',
@@ -51,9 +48,7 @@ const LoginPage = () => {
       icon: <Stethoscope className="w-10 h-10" />,
       description: 'View schedule & manage consultations',
       color: 'purple',
-      gradient: 'from-purple-500 to-pink-500',
-      userId: 'd1',
-      accessKey: 'doctor@2026'
+      gradient: 'from-purple-500 to-pink-500'
     }
   ];
 
@@ -63,8 +58,18 @@ const LoginPage = () => {
       return;
     }
 
-    // Mock authentication - any key works
-    const user = login(selectedRole);
+    if (!userId.trim()) {
+      toast.error('Please enter your User ID');
+      return;
+    }
+
+    if (!accessKey.trim()) {
+      toast.error('Please enter your Access Key');
+      return;
+    }
+
+    // Mock authentication - validates userId and accessKey
+    const user = login(selectedRole, { userId, accessKey });
     toast.success(`Welcome, ${user.name}!`);
 
     // Redirect to role-specific dashboard
@@ -172,25 +177,26 @@ const LoginPage = () => {
           ))}
         </div>
 
-        {/* Access Key Input (Appears when role is selected) */}
+        {/* Login Form (Appears when role is selected) */}
         {selectedRole && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="space-y-4 bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm"
           >
-            {/* Display selected role credentials */}
-            <div className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50 border border-slate-800">
-              <div>
-                <p className="text-xs text-slate-500">User ID</p>
-                <p className="text-sm font-mono text-emerald-400">{roles.find(r => r.id === selectedRole)?.userId}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-slate-500">Access Key</p>
-                <p className="text-sm font-mono text-blue-400">{roles.find(r => r.id === selectedRole)?.accessKey}</p>
-              </div>
+            {/* User ID Input */}
+            <div className="relative group">
+              <IdCard className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-emerald-500 transition-colors" />
+              <input
+                type="text"
+                placeholder={`Enter ${selectedRole === 'PATIENT' ? 'Patient' : selectedRole === 'DOCTOR' ? 'Doctor' : 'Receptionist'} ID`}
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                className="w-full bg-slate-900 border border-white/10 focus:border-emerald-500 rounded-xl py-4 pl-12 pr-4 text-white placeholder:text-slate-600 outline-none transition-all"
+              />
             </div>
 
+            {/* Access Key Input */}
             <div className="relative group">
               <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 group-focus-within:text-emerald-500 transition-colors" />
               <input
@@ -212,33 +218,28 @@ const LoginPage = () => {
             </button>
 
             <p className="text-xs text-slate-500 text-center">
-              🔒 Use the access key shown above or any key to login
+              🔒 Enter your credentials to access the system
             </p>
           </motion.div>
         )}
 
-        {/* Info Card - Credentials */}
+        {/* Info Card - Sample Credentials */}
         {!selectedRole && (
           <div className="mt-8 p-6 rounded-2xl bg-blue-500/5 border border-blue-500/20">
-            <p className="text-sm text-blue-400 font-bold text-center mb-4">Preview Mode Credentials</p>
-            <div className="grid gap-3">
-              {roles.map((role) => (
-                <div key={role.id} className="flex items-center justify-between p-3 rounded-lg bg-slate-900/50 border border-slate-800">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${role.gradient} flex items-center justify-center text-white scale-75`}>
-                      {role.icon}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-300">{role.title}</p>
-                      <p className="text-xs text-slate-500">User ID: <span className="text-emerald-400 font-mono">{role.userId}</span></p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-500">Access Key</p>
-                    <p className="text-sm font-mono text-blue-400">{role.accessKey}</p>
-                  </div>
-                </div>
-              ))}
+            <p className="text-sm text-blue-400 font-bold text-center mb-4">Sample Credentials (Preview Mode)</p>
+            <div className="grid gap-3 text-left">
+              <div className="p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                <p className="text-xs text-emerald-400 font-semibold mb-1">Patient</p>
+                <p className="text-xs text-slate-400">ID: <span className="text-white font-mono">p1</span> • Key: <span className="text-white font-mono">patient@2026</span></p>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                <p className="text-xs text-blue-400 font-semibold mb-1">Receptionist</p>
+                <p className="text-xs text-slate-400">ID: <span className="text-white font-mono">r1</span> • Key: <span className="text-white font-mono">reception@2026</span></p>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/50 border border-slate-800">
+                <p className="text-xs text-purple-400 font-semibold mb-1">Doctor</p>
+                <p className="text-xs text-slate-400">ID: <span className="text-white font-mono">d1</span> • Key: <span className="text-white font-mono">doctor@2026</span></p>
+              </div>
             </div>
           </div>
         )}

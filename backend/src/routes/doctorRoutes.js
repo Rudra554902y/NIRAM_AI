@@ -11,8 +11,24 @@ router.get(
   controller.getDoctorProfile
 );
 
-// Mark emergency leave
+// Get today's appointments
+router.get(
+  "/appointments/today",
+  authenticate,
+  authorize("DOCTOR"),
+  controller.getTodayAppointments
+);
+
+// Mark appointment as seen
 router.put(
+  "/appointments/:id/seen",
+  authenticate,
+  authorize("DOCTOR"),
+  controller.markAppointmentSeen
+);
+
+// Mark emergency leave
+router.post(
   "/emergency-leave",
   authenticate,
   authorize("DOCTOR"),

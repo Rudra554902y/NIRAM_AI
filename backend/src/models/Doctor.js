@@ -1,5 +1,32 @@
 const mongoose = require("mongoose");
 
+const leaveSchema = new mongoose.Schema(
+  {
+    type: {
+      type: String,
+      enum: ["PLANNED_FULL", "PLANNED_PARTIAL", "EMERGENCY"],
+      required: true,
+    },
+
+    date: { type: Date, required: true },
+
+    // For partial planned leave
+    fromTime: String, // "13:00"
+    toTime: String,
+
+    // For emergency leave
+    emergencyAfterAppointments: Number, // e.g. 2 (leave after 2 more patients)
+    emergencyAfterMinutes: Number, // optional alternative
+
+    status: {
+      type: String,
+      enum: ["ACTIVE", "PROCESSED", "CANCELLED"],
+      default: "ACTIVE",
+    },
+  },
+  { timestamps: true }
+);
+
 const doctorSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -7,12 +34,17 @@ const doctorSchema = new mongoose.Schema({
     required: true,
   },
   specialization: String,
-  workingDays: [String], // ["Monday", "Tuesday"]
-  startTime: String,     // "09:00"
-  endTime: String,       // "17:00"
-  slotDuration: Number,  // in minutes
-  leaveDate: Date,
-  leaveFromTime: String, // optional (mid-day leave)
+  workingDays: [String],
+  startTime: String,
+  endTime: String,
+  slotDuration: Number,
+
+  leaves: [leaveSchema], // 🔥 important change
+
+  isSuperDoctor: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Doctor", doctorSchema);

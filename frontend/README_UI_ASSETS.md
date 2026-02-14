@@ -329,4 +329,4 @@ import {
 
 **Last Updated:** February 14, 2026  
 **Maintained By:** NIRAM Development Team  
-**Version:** 1.0 - Enterprise Edition
+**Version:** 1.0

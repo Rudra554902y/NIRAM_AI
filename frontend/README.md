@@ -15,7 +15,7 @@
 
 **NIRAM** is a comprehensive healthcare workflow management system designed for modern clinical practices. It combines role-based access control, intelligent appointment scheduling, digital prescription management, and real-time queue monitoring in a beautiful, responsive interface.
 
-### Enterprise Edition v1.0
+### Version 1.0
 - ✅ Pure JavaScript React implementation
 - ✅ Three role-based dashboards (Patient, Doctor, Receptionist)
 - ✅ Schema-aligned data structures
@@ -175,7 +175,7 @@ MIT License
 
 Built with React, Vite, Tailwind CSS, and modern web technologies.
 
-**NIRAM Healthcare Systems** • Enterprise Edition 2026
+**NIRAM Healthcare Systems** • 2026
 
 ---
 

@@ -140,7 +140,7 @@ const HomePage = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <div className="inline-block px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold mb-6">
-              ✨ ENTERPRISE EDITION 2026
+              ✨ HEALTHCARE WORKFLOW SYSTEM
             </div>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-6 bg-gradient-to-r from-white via-emerald-200 to-white bg-clip-text text-transparent leading-tight">

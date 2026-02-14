@@ -111,7 +111,7 @@ const LoginPage = () => {
         {/* Header */}
         <div className="flex flex-col items-center mb-12">
           <div className="mb-4">
-            <Logo size="xl" />
+            <Logo size="2xl" />
           </div>
           <h1 className="text-4xl font-bold text-white tracking-tight mb-2">System Access</h1>
           <p className="text-slate-400 text-lg">Select your role to continue</p>

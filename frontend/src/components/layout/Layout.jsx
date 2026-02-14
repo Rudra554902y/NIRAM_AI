@@ -34,7 +34,7 @@ const Layout = ({ user, children, menuItems, activeTab, onTabChange }) => {
         <div className="p-6 border-b border-white/10">
           {/* Logo */}
           <div className="mb-6">
-            <Logo size="md" showText={true} />
+            <Logo size="lg" showText={true} />
           </div>
 
           {/* User Info */}
@@ -90,7 +90,7 @@ const Layout = ({ user, children, menuItems, activeTab, onTabChange }) => {
       <div className="md:hidden bg-slate-900/50 border-b border-white/10 backdrop-blur-sm sticky top-0 z-50">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-3">
-            <Logo size="sm" />
+            <Logo size="md" />
             <span className="font-bold">NIRAM</span>
           </div>
           <button
